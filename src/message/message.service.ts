@@ -14,11 +14,7 @@ export class MessageService {
     private readonly chatService: ChatService,
   ) {}
 
-  async sendMessage(
-    selfId: number,
-    chatId: number,
-    content: string,
-  ): Promise<{ content: string }> {
+  async sendMessage(selfId: number, chatId: number, content: string) {
     const user = await this.userService.getUserById(selfId);
     if (!user)
       throw new BadRequestException("User with specified ID doesn't exist!");
@@ -35,9 +31,7 @@ export class MessageService {
     message.chat = chat;
     message.content = content;
 
-    await this.messageRepository.save(message);
-    return {
-      content,
-    };
+    const result = await this.messageRepository.save(message);
+    return result;
   }
 }
