@@ -23,4 +23,14 @@ export class ChatService {
     await this.chatRepository.save(chat);
     return chat;
   }
+
+  async getChatById(chatId: number): Promise<Chat | null> {
+    const chat = await this.chatRepository.findOne({
+      where: { id: chatId },
+      relations: {
+        users: true,
+      },
+    });
+    return chat;
+  }
 }

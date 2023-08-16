@@ -9,5 +9,6 @@ import { User } from 'src/user/models/user.model';
   imports: [TypeOrmModule.forFeature([Chat, User])],
   providers: [ChatService],
   controllers: [ChatController],
+  exports: [ChatService],
 })
 export class ChatModule {}
