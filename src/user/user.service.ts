@@ -27,4 +27,14 @@ export class UserService {
     await this.userRepository.save(user);
     return user;
   }
+
+  async getUserById(id: number): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: {
+        chats: true,
+      },
+    });
+    return user;
+  }
 }
