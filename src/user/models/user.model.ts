@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Chat } from 'src/chat/models/chat.model';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'users' })
 export class User {
@@ -13,4 +20,8 @@ export class User {
 
   @Column({ type: 'varchar', length: 255, nullable: false })
   email: string;
+
+  @ManyToMany(() => Chat)
+  @JoinTable({ name: 'users_chats' })
+  chats: Chat[];
 }
