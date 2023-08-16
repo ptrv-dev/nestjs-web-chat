@@ -29,12 +29,15 @@ export class UserService {
   }
 
   async getUserById(id: number): Promise<User> {
-    const user = await this.userRepository.findOne({
-      where: { id },
-      relations: {
-        chats: true,
-      },
-    });
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id })
+      .select(['user.id', 'user.username', 'user.email'])
+      .leftJoinAndSelect('user.chats', 'chats')
+      .leftJoinAndSelect('chats.messages', 'messages')
+      .limit(5)
+      .orderBy('messages.createdAt', 'DESC')
+      .getOne();
     return user;
   }
 }
