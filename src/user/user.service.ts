@@ -1,6 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { User } from './models/user.model';
@@ -39,5 +39,14 @@ export class UserService {
       .orderBy('messages.createdAt', 'DESC')
       .getOne();
     return user;
+  }
+
+  async searchUserByUsername(username): Promise<User[]> {
+    const users = await this.userRepository.find({
+      where: { username: Like(`%${username}%`) },
+      take: 10,
+      select: ['id', 'username', 'email'],
+    });
+    return users;
   }
 }
